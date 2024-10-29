@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Indicator App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .text-green { color: green; }
+        .text-red { color: red; }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Stock Indicator App</h1>
+        <form method="POST">
+            <div class="form-group">
+                <label for="ticker">Enter Stock Ticker:</label>
+                <input type="text" id="ticker" name="ticker" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Get Data</button>
+        </form>
+
+        {% if company_name %}
+            <h2 class="mt-5">{{ company_name }}</h2>
+        {% endif %}
+
+        {% if metrics %}
+            <h3>Risk Metrics Comparison</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Stock ({{ company_name }})</th>
+                        <th>Explanation</th>
+                        <th>Benchmark (S&P 500)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Alpha</td>
+                        <td>{{ metrics['Stock Metrics']['Alpha']['value'] }}</td>
+                        <td><span class="text-{{ metrics['Stock Metrics']['Alpha']['color'] }}">{{ metrics['Stock Metrics']['Alpha']['text'] }}</span></td>
+                        <td>{{ metrics['Benchmark Metrics']['Alpha']['value'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Beta</td>
+                        <td>{{ metrics['Stock Metrics']['Beta']['value'] }}</td>
+                        <td><span class="text-{{ metrics['Stock Metrics']['Beta']['color'] }}">{{ metrics['Stock Metrics']['Beta']['text'] }}</span></td>
+                        <td>{{ metrics['Benchmark Metrics']['Beta']['value'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>R-Squared</td>
+                        <td>{{ metrics['Stock Metrics']['R-Squared']['value'] }}</td>
+                        <td><span class="text-{{ metrics['Stock Metrics']['R-Squared']['color'] }}">{{ metrics['Stock Metrics']['R-Squared']['text'] }}</span></td>
+                        <td>{{ metrics['Benchmark Metrics']['R-Squared']['value'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Standard Deviation</td>
+                        <td>{{ metrics['Stock Metrics']['Standard Deviation']['value'] }}</td>
+                        <td><span class="text-{{ metrics['Stock Metrics']['Standard Deviation']['color'] }}">{{ metrics['Stock Metrics']['Standard Deviation']['text'] }}</span></td>
+                        <td>{{ metrics['Benchmark Metrics']['Standard Deviation']['value'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Sharpe Ratio</td>
+                        <td>{{ metrics['Stock Metrics']['Sharpe Ratio']['value'] }}</td>
+                        <td><span class="text-{{ metrics['Stock Metrics']['Sharpe Ratio']['color'] }}">{{ metrics['Stock Metrics']['Sharpe Ratio']['text'] }}</span></td>
+                        <td>{{ metrics['Benchmark Metrics']['Sharpe Ratio']['value'] }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        {% endif %}
+
+        {% if data %}
+            <h3>Stock Data for Last 5 Days</h3>
+            <div>{{ data|safe }}</div>
+        {% endif %}
+
+        {% if comparison_text %}
+            <h3 class="mt-4">{{ comparison_text }}</h3>
+        {% endif %}
+
+        {% if stock_plot_url %}
+            <h3 class="mt-4">30-Day Performance Comparison</h3>
+            <img src="{{ stock_plot_url }}" alt="Stock and Benchmark Comparison Chart">
+        {% endif %}
+    </div>
+</body>
+</html>
